@@ -1,2 +1,12 @@
 ---
-GREETING: Hello World!
+# Flask secret key. Used to create secure session cookies among other things.
+# This should be a complex random value.
+#SECRET_KEY:
+
+# OAuth key and secret. These are generated for you by
+# [[Special:OAuthConsumerRegistration/propose]]
+#CONSUMER_KEY:
+#CONSUMER_SECRET:
+
+# Base URI to use when making OAuth requests to MediaWiki
+OAUTH_MWURI: https://meta.wikimedia.org/w/index.php

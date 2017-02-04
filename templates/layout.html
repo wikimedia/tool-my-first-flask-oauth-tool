@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Language" content="en-us"/>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=yes, width=device-width">
+    <meta http-equiv="imagetoolbar" content="no"/>
+    <title>{% block title %}My first Flask OAuth tool{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='reset.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='site.css') }}">
+  </head>
+  <body>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flashes">
+          {% for message in messages %}
+          <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    {% block body %}{% endblock %}
+    <footer>
+      <div id="powered-by">
+        <img src="https://tools-static.wmflabs.org/static/logos/powered-by-tool-labs.png" alt="Powered by Wikimedia Tool Labs">
+      </div>
+      <a id="source" href="https://phabricator.wikimedia.org/source/tool-my-first-flask-oauth-tool/">view source</a>
+    </footer>
+  </body>
+</html>

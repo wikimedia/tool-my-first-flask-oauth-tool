@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block body %}
+<h1>My first Flask OAuth tool</h1>
+<p>This is a simple demonstration application that shows how to create a basic Flask app and use OAuth to authenticate users.</p>
+
+{% if username %}
+  <p>Hello {{ username }}</p>
+  <p><a href="{{ url_for('logout') }}">logout</a></p>
+{% else %}
+  <p><a href="{{ url_for('login') }}">login</a></p>
+{% endif %}
+{% endblock %}
