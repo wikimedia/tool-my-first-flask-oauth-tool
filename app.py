@@ -18,9 +18,22 @@
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import flask
+import os
+import yaml
 
 app = flask.Flask(__name__)
 
+__dir__ = os.path.dirname(__file__)
+app.config.update(
+    yaml.load(open(os.path.join(__dir__, 'default_config.yaml'))))
+try:
+    app.config.update(
+        yaml.load(open(os.path.join(__dir__, 'config.yaml'))))
+except IOError:
+    # It is ok if there is no local config file
+    pass
+
+
 @app.route('/')
 def index():
-  return 'Hello World!'
+  return app.config['GREETING']
