@@ -60,7 +60,7 @@ def login():
             app.config['OAUTH_MWURI'], consumer_token)
     except Exception:
         app.logger.exception('mwoauth.initiate failed')
-        flask.flash(u'OAuth handshake failed.')
+        flask.flash(u'OAuth handshake failed.' 'danger')
         flask.redirect(flask.url_for('index'))
     else:
         flask.session['request_token'] = dict(zip(
@@ -72,7 +72,7 @@ def login():
 def oauth_callback():
     """OAuth handshake callback."""
     if 'request_token' not in flask.session:
-        flask.flash(u'OAuth callback failed. Are cookies disabled?')
+        flask.flash(u'OAuth callback failed. Are cookies disabled?', 'danger')
         return flask.redirect(flask.url_for('index'))
 
     consumer_token = mwoauth.ConsumerToken(
@@ -96,7 +96,8 @@ def oauth_callback():
         flask.session['access_token'] = dict(zip(
             access_token._fields, access_token))
         flask.session['username'] = identity['username']
-        flask.flash(u'You were signed in, %s!' % identity['username'])
+        flask.flash(
+            u'You were signed in, %s!' % identity['username'], 'success')
 
     return flask.redirect(flask.url_for('index'))
 
@@ -105,5 +106,5 @@ def oauth_callback():
 def logout():
     """Log the user out by clearing their session."""
     flask.session.clear()
-    flask.flash(u'You have been logged out.')
+    flask.flash(u'You have been logged out.', 'info')
     return flask.redirect(flask.url_for('index'))

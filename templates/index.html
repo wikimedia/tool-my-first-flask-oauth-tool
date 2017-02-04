@@ -1,12 +1,56 @@
 {% extends "layout.html" %}
-{% block body %}
-<h1>My first Flask OAuth tool</h1>
-<p>This is a simple demonstration application that shows how to create a basic Flask app and use OAuth to authenticate users.</p>
 
-{% if username %}
-  <p>Hello {{ username }}</p>
-  <p><a href="{{ url_for('logout') }}">logout</a></p>
-{% else %}
-  <p><a href="{{ url_for('login') }}">login</a></p>
-{% endif %}
+{% block navright %}
+  {% if username %}
+    <li>
+      <a href="{{ url_for('logout') }}">
+        <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+        Logout
+      </a>
+    </li>
+  {% else %}
+    <li>
+      <a href="{{ url_for('login') }}">
+        <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
+        Login
+      </a>
+    </li>
+  {% endif %}
+{% endblock %}
+
+{% block banner %}
+<div class="jumbotron">
+  <div class="container">
+    <h1>My first Flask OAuth tool</h1>
+    <p>This is a simple demo which shows how to create a basic Flask app with OAuth authentication and run it on Tool Labs.</p>
+    <p><a class="btn btn-info btn-lg" href="https://wikitech.wikimedia.org/wiki/Help:Tool_Labs/My_first_Flask_OAuth_tool" role="button">Read tutorial on wikitech</a></p>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+  {% if username %}
+    <h2>Hello {{ username }}</h2>
+    <p>
+      <a href="{{ url_for('logout') }}" class="btn btn-primary btn-lg btn-block">
+        <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+        Logout
+      </a>
+    </p>
+  {% else %}
+    <p>
+      <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg btn-block">
+        <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
+        Login using OAuth
+      </a>
+    </p>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">About this app</h3>
+      </div>
+      <div class="panel-body">
+        <p>This application uses <a href="https://www.mediawiki.org/wiki/Help:OAuth">OAuth</a> for authentication. It also uses the OAuth <code>authenticate</code> endpoint so that users are not prompted by MediaWiki if they have already approved the application. All rights granted to this application can be revoked by visiting <a href="https://meta.wikimedia.org/wiki/Special:OAuthManageMyGrants">[[Special:OAuthManageMyGrants]] on meta</a> and revoking access for the "My first Flask OAuth tool" application.</p>
+      </div>
+    </div>
 {% endblock %}
