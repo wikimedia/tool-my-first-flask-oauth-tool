@@ -21,13 +21,18 @@
 import flask
 import mwoauth
 import os
+import werkzeug.contrib.fixers
 import yaml
 
 
+# Create the Flask application
 app = flask.Flask(__name__)
 
+# Add the ProxyFix middleware which reads X-Forwarded-* headers
+app.wsgi_app = werkzeug.contrib.fixers.ProxyFix(app.wsgi_app)
 
-# Load configuration from YAML file(s)
+# Load configuration from YAML file(s).
+# See default_config.yaml for more information
 __dir__ = os.path.dirname(__file__)
 app.config.update(
     yaml.load(open(os.path.join(__dir__, 'default_config.yaml'))))
@@ -70,7 +75,11 @@ def login():
 
 @app.route('/oauth-callback')
 def oauth_callback():
-    """OAuth handshake callback."""
+    """OAuth handshake callback.
+
+    Validate the response from the MediaWiki server and call the MediaWiki API
+    to get information about the user that has been authenticated.
+    """
     if 'request_token' not in flask.session:
         flask.flash(u'OAuth callback failed. Are cookies disabled?', 'danger')
         return flask.redirect(flask.url_for('index'))
