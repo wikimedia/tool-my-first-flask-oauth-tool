@@ -65,7 +65,7 @@ def login():
             app.config['OAUTH_MWURI'], consumer_token)
     except Exception:
         app.logger.exception('mwoauth.initiate failed')
-        flask.flash(u'OAuth handshake failed.' 'danger')
+        flask.flash(u'OAuth handshake failed.', 'danger')
         flask.redirect(flask.url_for('index'))
     else:
         flask.session['request_token'] = dict(zip(
