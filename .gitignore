@@ -1,4 +1,5 @@
 *.py[cod]
+/.python-version
 /.tox
 /config.yaml
 __pycache__/
