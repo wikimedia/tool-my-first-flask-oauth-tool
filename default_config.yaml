@@ -19,7 +19,7 @@
 SESSION_COOKIE_NAME: mffot
 
 # URL path for the session cookie. The Flask default is '/' which is not the
-# best idea on Tool Labs where multiple applications with different owners are
+# best idea on Toolforge where multiple applications with different owners are
 # hosted in the same domain. The value given here will only work if for the
 # my-first-flask-oauth-tool account, so you should override it in your
 # config.yaml if you have forked the tool for use with anohter account.

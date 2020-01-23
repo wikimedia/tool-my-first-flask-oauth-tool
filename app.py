@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# This file is part of the Tool Labs Flask + OAuth WSGI tutorial
+# This file is part of the Toolforge Flask + OAuth WSGI tutorial
 #
 # Copyright (C) 2017 Bryan Davis and contributors
 #

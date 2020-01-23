@@ -5,14 +5,14 @@ This git repository contains the source code for a basic Python webservice
 built using the Flask framework. It shows how to use the `mwoath` library to
 manage OAuth authentication with a MediaWiki server.
 
-Deploy on Tool Labs
+Deploy on Toolforge
 -------------------
-See https://wikitech.wikimedia.org/wiki/Help:Tool_Labs/My_first_Flask_OAuth_tool
+See https://wikitech.wikimedia.org/wiki/Help:Toolforge/My_first_Flask_OAuth_tool
 for a detailed tutorial describing the full process of creating a tool account
 and running this tool.
 
 ```
-$ ssh tools-dev.wmflabs.org
+$ ssh login.tools.wmflabs.org
 $ become $TOOL_NAME
 $ mkdir -p $HOME/www/python
 $ git clone https://phabricator.wikimedia.org/source/tool-my-first-flask-oauth-tool.git \
