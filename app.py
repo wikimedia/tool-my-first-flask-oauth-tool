@@ -21,7 +21,7 @@
 import flask
 import mwoauth
 import os
-import werkzeug.contrib.fixers
+import werkzeug.middleware.proxy_fix
 import yaml
 
 
@@ -29,7 +29,7 @@ import yaml
 app = flask.Flask(__name__)
 
 # Add the ProxyFix middleware which reads X-Forwarded-* headers
-app.wsgi_app = werkzeug.contrib.fixers.ProxyFix(app.wsgi_app)
+app.wsgi_app = werkzeug.middleware.proxy_fix.ProxyFix(app.wsgi_app)
 
 # Load configuration from YAML file(s).
 # See default_config.yaml for more information
