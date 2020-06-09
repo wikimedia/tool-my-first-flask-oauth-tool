@@ -35,23 +35,25 @@ app.wsgi_app = werkzeug.contrib.fixers.ProxyFix(app.wsgi_app)
 # See default_config.yaml for more information
 __dir__ = os.path.dirname(__file__)
 app.config.update(
-    yaml.safe_load(open(os.path.join(__dir__, 'default_config.yaml'))))
+    yaml.safe_load(open(os.path.join(__dir__, "default_config.yaml")))
+)
 try:
     app.config.update(
-        yaml.safe_load(open(os.path.join(__dir__, 'config.yaml'))))
+        yaml.safe_load(open(os.path.join(__dir__, "config.yaml")))
+    )
 except IOError:
     # It is ok if there is no local config file
     pass
 
 
-@app.route('/')
+@app.route("/")
 def index():
     """Application landing page."""
-    username = flask.session.get('username', None)
-    return flask.render_template('index.html', username=username)
+    username = flask.session.get("username", None)
+    return flask.render_template("index.html", username=username)
 
 
-@app.route('/login')
+@app.route("/login")
 def login():
     """Initiate an OAuth login.
 
@@ -59,61 +61,69 @@ def login():
     user to the MediaWiki server to sign the request.
     """
     consumer_token = mwoauth.ConsumerToken(
-        app.config['CONSUMER_KEY'], app.config['CONSUMER_SECRET'])
+        app.config["CONSUMER_KEY"], app.config["CONSUMER_SECRET"]
+    )
     try:
         redirect, request_token = mwoauth.initiate(
-            app.config['OAUTH_MWURI'], consumer_token)
+            app.config["OAUTH_MWURI"], consumer_token
+        )
     except Exception:
-        app.logger.exception('mwoauth.initiate failed')
-        flask.flash(u'OAuth handshake failed.', 'danger')
-        flask.redirect(flask.url_for('index'))
+        app.logger.exception("mwoauth.initiate failed")
+        flask.flash("OAuth handshake failed.", "danger")
+        flask.redirect(flask.url_for("index"))
     else:
-        flask.session['request_token'] = dict(zip(
-            request_token._fields, request_token))
+        flask.session["request_token"] = dict(
+            zip(request_token._fields, request_token)
+        )
         return flask.redirect(redirect)
 
 
-@app.route('/oauth-callback')
+@app.route("/oauth-callback")
 def oauth_callback():
     """OAuth handshake callback.
 
     Validate the response from the MediaWiki server and call the MediaWiki API
     to get information about the user that has been authenticated.
     """
-    if 'request_token' not in flask.session:
-        flask.flash(u'OAuth callback failed. Are cookies disabled?', 'danger')
-        return flask.redirect(flask.url_for('index'))
+    if "request_token" not in flask.session:
+        flask.flash("OAuth callback failed. Are cookies disabled?", "danger")
+        return flask.redirect(flask.url_for("index"))
 
     consumer_token = mwoauth.ConsumerToken(
-        app.config['CONSUMER_KEY'], app.config['CONSUMER_SECRET'])
+        app.config["CONSUMER_KEY"], app.config["CONSUMER_SECRET"]
+    )
 
     try:
         access_token = mwoauth.complete(
-            app.config['OAUTH_MWURI'],
+            app.config["OAUTH_MWURI"],
             consumer_token,
-            mwoauth.RequestToken(**flask.session['request_token']),
-            flask.request.query_string)
+            mwoauth.RequestToken(**flask.session["request_token"]),
+            flask.request.query_string,
+        )
 
         identity = mwoauth.identify(
-                app.config['OAUTH_MWURI'], consumer_token, access_token)
+            app.config["OAUTH_MWURI"], consumer_token, access_token
+        )
 
     except Exception:
-        app.logger.exception('OAuth autnetication failed')
-        flask.flask(u'OAuth authentication failed.')
+        app.logger.exception("OAuth autnetication failed")
+        flask.flask("OAuth authentication failed.")
 
     else:
-        flask.session['access_token'] = dict(zip(
-            access_token._fields, access_token))
-        flask.session['username'] = identity['username']
+        flask.session["access_token"] = dict(
+            zip(access_token._fields, access_token)
+        )
+        flask.session["username"] = identity["username"]
         flask.flash(
-            u'You were signed in, %s!' % identity['username'], 'success')
+            "You were signed in, %s!" % identity["username"], "success"
+        )
 
-    return flask.redirect(flask.url_for('index'))
+    return flask.redirect(flask.url_for("index"))
 
 
-@app.route('/logout')
+@app.route("/logout")
 def logout():
     """Log the user out by clearing their session."""
     flask.session.clear()
-    flask.flash(u'You have been logged out.', 'info')
-    return flask.redirect(flask.url_for('index'))
+    flask.flash("You have been logged out.", "info")
+    return flask.redirect(flask.url_for("index"))
