@@ -12,8 +12,13 @@ for a detailed tutorial describing the full process of creating a tool account
 and running this tool.
 
 ```
-$ ssh login.tools.wmflabs.org
+$ ssh login.toolforge.org
 $ become $TOOL_NAME
+$ cat > $HOME/service.template << EOF
+backend: kubernetes
+type: python3.7
+canonical: true
+EOF
 $ mkdir -p $HOME/www/python
 $ git clone https://phabricator.wikimedia.org/source/tool-my-first-flask-oauth-tool.git \
   $HOME/www/python/src
@@ -25,13 +30,13 @@ SECRET_KEY: $(python -c "import os; print repr(os.urandom(24))")
 CONSUMER_KEY: $KEY_YOU_GOT_FROM_OAUTH_REGISTRATION
 CONSUMER_SECRET: $SECRET_YOU_GOT_FROM_OAUTH_REGISTRATION
 EOF
-$ webservice --backend=kubernetes python shell
+$ webservice shell
 $ python3 -m venv $HOME/www/python/venv
 $ source $HOME/www/python/venv/bin/activate
 $ pip install --upgrade pip
 $ pip install -r $HOME/www/python/src/requirements.txt
 $ exit
-$ webservice --backend=kubernetes python start
+$ webservice start
 ```
 
 License
